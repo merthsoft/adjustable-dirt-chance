@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <merthsoft_nodirt_settings_chance_label>Percentage Chance</merthsoft_nodirt_settings_chance_label>
+  <merthsoft_nodirt_settings_in_home>In home area</merthsoft_nodirt_settings_in_home>
+  <merthsoft_nodirt_settings_outside_home>Outside home area</merthsoft_nodirt_settings_outside_home>
+  <merthsoft_nodirt_settings_category>No Dirt</merthsoft_nodirt_settings_category>
+
+  <!-- {0} = filthName -->
+  <merthsoft_nodirt_settings_filth_desc>Percentage chance that {0} will spawn when the engine attempts to spawn filth.</merthsoft_nodirt_settings_filth_desc>
+</LanguageData>

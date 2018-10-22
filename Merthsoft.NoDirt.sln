@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merthsoft.NoDirt", "Source\Merthsoft.NoDirt.csproj", "{796A79A2-6754-4847-9910-28DE0A4E5FF1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "About", "About", "{4866D578-D1E5-4F81-8906-9E86D6148E4D}"
+	ProjectSection(SolutionItems) = preProject
+		About\About.xml = About\About.xml
+		About\Preview.png = About\Preview.png
+		About\PublishedFileId.txt = About\PublishedFileId.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{56A37814-1301-4798-9206-8BC191D9EA31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "English", "English", "{BFD5489C-7DCF-4A92-A634-8FFEE706E733}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{5AC4E7E6-FD8F-478A-900C-B2A14F446C77}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\English\Keyed\NoDirtEnglish.xml = Languages\English\Keyed\NoDirtEnglish.xml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BFD5489C-7DCF-4A92-A634-8FFEE706E733} = {56A37814-1301-4798-9206-8BC191D9EA31}
+		{5AC4E7E6-FD8F-478A-900C-B2A14F446C77} = {BFD5489C-7DCF-4A92-A634-8FFEE706E733}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F1AB7AD2-FB3B-4EE1-B8D1-89D000B57401}
+	EndGlobalSection
+EndGlobal
