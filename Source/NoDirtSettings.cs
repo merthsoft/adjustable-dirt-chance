@@ -5,11 +5,11 @@ using System.Linq;
 using Verse;
 
 namespace Merthsoft.NoDirt {
-    public class NoDirtSettings : ModSettings, IEnumerable<FilthSetting>{
+    public class NoDirtSettings : ModSettings, IEnumerable<FilthSetting> {
+        readonly Dictionary<string, FilthSetting> filthMappings = new Dictionary<string, FilthSetting>();
+
         public int DefaultInsideHomeAreaPercentageChange = 0;
         public int DefaultOutsideHomeAreaPercentageChange = 0;
-        
-        Dictionary<string, FilthSetting> filthMappings = new Dictionary<string, FilthSetting>();
 
         public void PopulateFilthType(string type) {
             filthMappings[type] = new FilthSetting(type);
@@ -21,7 +21,7 @@ namespace Merthsoft.NoDirt {
             Scribe_Values.Look(ref DefaultInsideHomeAreaPercentageChange, "default_inHome", 0, true);
             Scribe_Values.Look(ref DefaultOutsideHomeAreaPercentageChange, "default_outHome", 0, true);
 
-            var filthNames = filthMappings.Any() ? string.Join("|", filthMappings.Keys.ToArray()) : "";
+            var filthNames = filthMappings.Any() ? string.Join("|", filthMappings.Keys.ToArray()) : string.Empty;
             Scribe_Values.Look(ref filthNames, "filth_names");
             var loadedNames = filthNames?.Split(new[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
 
