@@ -23,14 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{5AC4E7E6
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		RimWorld|RimWorld = RimWorld|RimWorld
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.Debug|Any CPU.ActiveCfg = RimWorld|RimWorld
-		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.Debug|Any CPU.Build.0 = RimWorld|RimWorld
-		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.Release|Any CPU.ActiveCfg = RimWorld|RimWorld
-		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.Release|Any CPU.Build.0 = RimWorld|RimWorld
+		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.RimWorld|RimWorld.ActiveCfg = RimWorld|RimWorld
+		{796A79A2-6754-4847-9910-28DE0A4E5FF1}.RimWorld|RimWorld.Build.0 = RimWorld|RimWorld
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

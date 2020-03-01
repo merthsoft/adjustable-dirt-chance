@@ -3,7 +3,11 @@
 		<name>Adjustable Dirt Chance - dev</name>
 		<url>https://bitbucket.org/merthsoft/nodirt</url>
 		<author>Shaun McFall</author>
-		<targetVersion>1.0.0</targetVersion>
-		<description>Allows you to adjust the chance that dirt (and all forms of filth) will spawn, in and outside the home area.
+    <supportedVersions>
+      <li>1.0</li>
+      <li>1.1</li>
+    </supportedVersions>
+    <packageId>Merthsoft.AdjustableDirtChance</packageId>
+		<description>Allows you to adjust the chance that dirt (and all forms of filth) will spawn when the game attempts to create it, in and outside the home area. Range is 0-100, with 0 meaning never, and 100 meaning always.
 Defaults to a 0 percent chance for all types of filth. Should work with any mods that add filth as long as this is loaded under that mod and it uses BaseFilth for its added filth.</description>
 </ModMetaData>
