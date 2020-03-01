@@ -2,8 +2,8 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Configuration Condition=" '$(Configuration)' == '' ">RimWorld</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">RimWorld</Platform>
     <ProjectGuid>{796A79A2-6754-4847-9910-28DE0A4E5FF1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Source\Properties</AppDesignerFolder>
@@ -14,20 +14,10 @@
     <TargetFrameworkProfile />
     <BaseIntermediateOutputPath>obj</BaseIntermediateOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\Assemblies\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'RimWorld|RimWorld' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Assemblies\</OutputPath>
+    <OutputPath>..\1.0\Assemblies\</OutputPath>
     <DefineConstants>
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
