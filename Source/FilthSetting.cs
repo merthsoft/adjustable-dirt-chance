@@ -1,18 +1,44 @@
-﻿using System;
+﻿using Verse;
 
 namespace Merthsoft.NoDirt {
     public class FilthSetting {
-        public string FilthDefName { get; }
+        private const string FilthDefNameArgumentLabel = "filthName";
 
-        public int PercentChanceInsideHomeArea { get; set; }
-        public int PercentChanceOutsideHomeArea { get; set; }
+        public string FilthDefName { get; }
+        private string InsideHomeFilthName => FilthDefName + "_inHome";
+        private string OutsideHomeFilthName => FilthDefName + "_outHome";
+
+        public int PercentChanceInsideHomeArea { get; private set; }
+        public int PercentChanceOutsideHomeArea { get; private set; }
+
         public bool Delete { get; set; }
 
-        public FilthSetting(string filthDefName) {
+        public (int insideHome, int outsideHome) PercentChances {
+            set => (PercentChanceInsideHomeArea, PercentChanceOutsideHomeArea) = value;
+        }
+
+        public FilthSetting(string filthDefName, int defaultInsideHomeAreaPercentageChange, int defaultOutsideHomeAreaPercentageChange) {
             FilthDefName = filthDefName;
 
-            PercentChanceInsideHomeArea = NoDirt.Settings?.DefaultInsideHomeAreaPercentageChange ?? 0;
-            PercentChanceOutsideHomeArea = NoDirt.Settings?.DefaultOutsideHomeAreaPercentageChange ?? 0;
+            PercentChanceInsideHomeArea = defaultInsideHomeAreaPercentageChange;
+            PercentChanceOutsideHomeArea = defaultOutsideHomeAreaPercentageChange;
+        }
+
+        public void ExposeData()
+            => PercentChances = (
+                InsideHomeFilthName.Look(PercentChanceInsideHomeArea), 
+                OutsideHomeFilthName.Look(PercentChanceOutsideHomeArea)
+            );
+
+        public void DoSubWindowContents(Listing_Standard listing) {
+            listing.Label(TranslationKeys.FilthDescription.Translate(new NamedArgument(FilthDefName, FilthDefNameArgumentLabel)));
+
+            PercentChances = (
+                listing.PercentageSliderTranslate(TranslationKeys.InsideHomeAreaValue, PercentChanceInsideHomeArea),
+                listing.PercentageSliderTranslate(TranslationKeys.OutsideHomeAreaValue, PercentChanceOutsideHomeArea)
+            );
+
+            Delete = listing.ButtonText(TranslationKeys.Delete.Translate());
         }
     }
 }
