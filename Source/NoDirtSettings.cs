@@ -2,17 +2,70 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Verse;
 
 namespace Merthsoft.NoDirt {
     public class NoDirtSettings : ModSettings, IEnumerable<FilthSetting> {
         readonly Dictionary<string, FilthSetting> filthMappings = new Dictionary<string, FilthSetting>();
 
-        public int DefaultInsideHomeAreaPercentageChange = 0;
-        public int DefaultOutsideHomeAreaPercentageChange = 0;
+        private int DefaultInsideHomeAreaPercentageChange = 0;
+        private int DefaultOutsideHomeAreaPercentageChange = 0;
 
-        public void PopulateFilthType(string type) {
-            filthMappings[type] = new FilthSetting(type);
+        private Vector2 scrollPosition = Vector2.zero;
+
+        public (int insideHome, int outsideHome) DefaultPercentChanges {
+            set => (DefaultInsideHomeAreaPercentageChange, DefaultOutsideHomeAreaPercentageChange) = value;
+        }
+
+        public FilthSetting PopulateFilthType(string type) 
+            => filthMappings[type] = new FilthSetting(type, DefaultInsideHomeAreaPercentageChange, DefaultOutsideHomeAreaPercentageChange);
+
+        public void DoSettingsWindowContext(Rect inRect) {
+            var listing = new Listing_Standard();
+            listing.Begin(inRect);
+
+            listing.Label(TranslationKeys.Explanation.Translate());
+
+            DefaultPercentChanges = (
+                listing.PercentageSliderTranslate(TranslationKeys.InsideHomeAreaValue, DefaultInsideHomeAreaPercentageChange),
+                listing.PercentageSliderTranslate(TranslationKeys.OutsideHomeAreaValue, DefaultOutsideHomeAreaPercentageChange)
+            );
+
+            var menuItems =
+                DefDatabase<ThingDef>.AllDefs
+                    .Where(t => t.IsFilth)
+                    .Select(t => t.defName)
+                    .Where(s => !this.Any(t => s == t.FilthDefName))
+                    .OrderBy(s => s)
+                    .Select(s => new FloatMenuOption(s, () => PopulateFilthType(s))).ToList();
+
+            if (menuItems.Count > 0) {
+                if (listing.ButtonText(TranslationKeys.Add.Translate())) {
+                    var floatMenu = new FloatMenu(menuItems);
+                    Find.WindowStack.Add(floatMenu);
+                }
+            } else {
+                listing.Label(TranslationKeys.AllFilthTypesAdded.Translate());
+                listing.GapLine();
+            }
+
+            if (this.Any()) {
+                var rect = new Rect(inRect.x, inRect.y + 175f, inRect.width, inRect.height - 255);
+                var viewRect = new Rect(0, 0, inRect.width - 16, this.Count() * 165);
+                listing.BeginScrollView(rect, ref scrollPosition, ref viewRect);
+
+                foreach (var setting in this) {
+                    setting.DoSubWindowContents(listing);
+                    listing.GapLine();
+                }
+
+                listing.EndScrollView(ref viewRect);
+            }
+
+            RemoveDeleted();
+            Write();
+            listing.End();
         }
 
         public override void ExposeData() {
@@ -31,14 +84,7 @@ namespace Merthsoft.NoDirt {
                 }
 
                 var setting = filthMappings[filthName];
-                int inHome = setting.PercentChanceInsideHomeArea;
-                int outHome = setting.PercentChanceOutsideHomeArea;
-
-                Scribe_Values.Look(ref inHome, filthName + "_inHome", 0, true);
-                Scribe_Values.Look(ref outHome, filthName + "_outHome", 0, true);
-
-                setting.PercentChanceInsideHomeArea = inHome;
-                setting.PercentChanceOutsideHomeArea = outHome;
+                setting.ExposeData();
             }
         }
 
@@ -47,35 +93,25 @@ namespace Merthsoft.NoDirt {
                 PopulateFilthType(areaName);
             }
 
-            filthMappings[areaName].PercentChanceInsideHomeArea = inHome;
-            filthMappings[areaName].PercentChanceOutsideHomeArea = outHome;
-        }
-
-        public void SetMapping(string areaName, FilthSetting mapping) {
-            SetMapping(areaName, mapping.PercentChanceInsideHomeArea, mapping.PercentChanceOutsideHomeArea);
+            filthMappings[areaName].PercentChances = (inHome, outHome);
         }
 
         public int GetMapping(string areaName, bool inHome) {
             if (!filthMappings.ContainsKey(areaName)) {
-                PopulateFilthType(areaName);
+                return inHome ? DefaultInsideHomeAreaPercentageChange : DefaultOutsideHomeAreaPercentageChange;
             }
 
             var mapping = filthMappings[areaName];
             return inHome ? mapping.PercentChanceInsideHomeArea : mapping.PercentChanceOutsideHomeArea;
         }
 
-        public FilthSetting GetMapping(string areaName) => filthMappings[areaName];
+        public IEnumerator<FilthSetting> GetEnumerator() 
+            => filthMappings.OrderBy(s => s.Key).Select(s => s.Value).GetEnumerator();
 
-        public IEnumerator<FilthSetting> GetEnumerator() {
-            return filthMappings.OrderBy(s => s.Key).Select(s => s.Value).GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() 
+            => GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() {
-            return GetEnumerator();
-        }
-
-        internal void RemoveDeleted() {
-            filthMappings.RemoveAll(s => s.Value.Delete);
-        }
+        public int RemoveDeleted() 
+            => filthMappings.RemoveAll(s => s.Value.Delete);
     }
 }
