@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<ModMetaData>
-		<name>Adjustable Dirt Chance - dev</name>
-		<url>https://bitbucket.org/merthsoft/nodirt</url>
-		<author>Shaun McFall</author>
+  <ModMetaData>
+    <name>Adjustable Dirt Chance - dev</name>
+    <url>https://github.com/merthsoft/adjustable-dirt-chance</url>
+    <author>Shaun McFall</author>
     <supportedVersions>
       <li>1.0</li>
       <li>1.1</li>
+      <li>1.2</li>
     </supportedVersions>
+    <modDependenciesByVersion>
+      <v1.2>
+        <li>
+          <packageId>Harmony</packageId>
+          <displayName>Harmony</displayName>
+          <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+        </li>
+      </v1.2>
+    </modDependenciesByVersion>
     <packageId>Merthsoft.AdjustableDirtChance</packageId>
-		<description>Allows you to adjust the chance that dirt (and all forms of filth) will spawn when the game attempts to create it, in and outside the home area. Range is 0-100, with 0 meaning never, and 100 meaning always.
+    <description>Allows you to adjust the chance that dirt (and all forms of filth) will spawn when the game attempts to create it, in and outside the home area. Range is 0-100, with 0 meaning never, and 100 meaning always.
 Vanilla behavior is 100%, but this mod changes it to default to a 0% chance for all types of filth. Should work with any mods that add filth as long as this is loaded under that mod and it uses BaseFilth for its added filth.</description>
 </ModMetaData>
