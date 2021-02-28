@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-  <merthsoft_nodirt_settings_category>No Dirt</merthsoft_nodirt_settings_category>
+  <merthsoft_nodirt_settings_category>Adjustable Dirt Chance</merthsoft_nodirt_settings_category>
 
   <merthsoft_nodirt_settings_explanation>Percentages range from 0-100. Vanilla behavior is 100%. Every time the engine attempts to spawn filth, it will first check the overrides for filth of that specific kind. If that's not found the defaults will be used. If the value is 0, the filth will never spawn. If it's 100, the filth will always spawn. For any value between there, it generates a random number, only spawns the filth if that number is less than the value to check for. This lets you decrease the overall amount of filth that's spawned. You can not use this to increase the amount of flith that's spawned.</merthsoft_nodirt_settings_explanation>
 
