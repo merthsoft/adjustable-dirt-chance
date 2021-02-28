@@ -5,23 +5,27 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace Merthsoft.NoDirt {
-    public class NoDirtSettings : ModSettings, IEnumerable<FilthSetting> {
-        readonly Dictionary<string, FilthSetting> filthMappings = new Dictionary<string, FilthSetting>();
+namespace Merthsoft.NoDirt
+{
+    public class NoDirtSettings : ModSettings, IEnumerable<FilthSetting>
+    {
+        private readonly Dictionary<string, FilthSetting> filthMappings = new();
 
         private int DefaultInsideHomeAreaPercentageChange = 0;
         private int DefaultOutsideHomeAreaPercentageChange = 0;
 
         private Vector2 scrollPosition = Vector2.zero;
 
-        public (int insideHome, int outsideHome) DefaultPercentChanges {
+        public (int insideHome, int outsideHome) DefaultPercentChanges
+        {
             set => (DefaultInsideHomeAreaPercentageChange, DefaultOutsideHomeAreaPercentageChange) = value;
         }
 
         public FilthSetting PopulateFilthType(string type) 
             => filthMappings[type] = new FilthSetting(type, DefaultInsideHomeAreaPercentageChange, DefaultOutsideHomeAreaPercentageChange);
 
-        public void DoSettingsWindowContext(Rect inRect) {
+        public void DoSettingsWindowContext(Rect inRect)
+        {
             var listing = new Listing_Standard();
             listing.Begin(inRect);
 
@@ -40,22 +44,28 @@ namespace Merthsoft.NoDirt {
                     .OrderBy(s => s)
                     .Select(s => new FloatMenuOption(s, () => PopulateFilthType(s))).ToList();
 
-            if (menuItems.Count > 0) {
-                if (listing.ButtonText(TranslationKeys.Add.Translate())) {
+            if (menuItems.Count > 0)
+            {
+                if (listing.ButtonText(TranslationKeys.Add.Translate()))
+                {
                     var floatMenu = new FloatMenu(menuItems);
                     Find.WindowStack.Add(floatMenu);
                 }
-            } else {
+            }
+            else
+            {
                 listing.Label(TranslationKeys.AllFilthTypesAdded.Translate());
                 listing.GapLine();
             }
 
-            if (this.Any()) {
+            if (this.Any())
+            {
                 var rect = new Rect(inRect.x, inRect.y + 175f, inRect.width, inRect.height - 255);
                 var viewRect = new Rect(0, 0, inRect.width - 16, this.Count() * 165);
                 listing.BeginScrollView(rect, ref scrollPosition, ref viewRect);
 
-                foreach (var setting in this) {
+                foreach (var setting in this)
+                {
                     setting.DoSubWindowContents(listing);
                     listing.GapLine();
                 }
@@ -68,7 +78,8 @@ namespace Merthsoft.NoDirt {
             listing.End();
         }
 
-        public override void ExposeData() {
+        public override void ExposeData()
+        {
             base.ExposeData();
 
             Scribe_Values.Look(ref DefaultInsideHomeAreaPercentageChange, "default_inHome", 0, true);
@@ -78,28 +89,28 @@ namespace Merthsoft.NoDirt {
             Scribe_Values.Look(ref filthNames, "filth_names");
             var loadedNames = filthNames?.Split(new[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var filthName in loadedNames) {
-                if (!filthMappings.ContainsKey(filthName)) {
+            foreach (var filthName in loadedNames)
+            {
+                if (!filthMappings.ContainsKey(filthName))
                     PopulateFilthType(filthName);
-                }
 
                 var setting = filthMappings[filthName];
                 setting.ExposeData();
             }
         }
 
-        public void SetMapping(string areaName, int inHome, int outHome) {
-            if (!filthMappings.ContainsKey(areaName)) {
+        public void SetMapping(string areaName, int inHome, int outHome)
+        {
+            if (!filthMappings.ContainsKey(areaName))
                 PopulateFilthType(areaName);
-            }
 
             filthMappings[areaName].PercentChances = (inHome, outHome);
         }
 
-        public int GetMapping(string areaName, bool inHome) {
-            if (!filthMappings.ContainsKey(areaName)) {
+        public int GetMapping(string areaName, bool inHome)
+        {
+            if (!filthMappings.ContainsKey(areaName))
                 return inHome ? DefaultInsideHomeAreaPercentageChange : DefaultOutsideHomeAreaPercentageChange;
-            }
 
             var mapping = filthMappings[areaName];
             return inHome ? mapping.PercentChanceInsideHomeArea : mapping.PercentChanceOutsideHomeArea;
