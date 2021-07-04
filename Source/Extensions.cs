@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using UnityEngine;
 using Verse;
+using static Verse.TranslatorFormattedStringExtensions;
 
 namespace Merthsoft.NoDirt
 {
@@ -11,10 +13,43 @@ namespace Merthsoft.NoDirt
             return value;
         }
 
-        public static int PercentageSliderTranslate(this Listing_Standard listing, string label, int value, string formatLabel = "value")
+        public static string AttemptTranslate(this string label)
+            => label.CanTranslate() ? label.Translate() : label;
+
+        public static string AttemptTranslate(this string label, object arg, string argLabel)
+            => label.CanTranslate()
+                ? label.Translate(new NamedArgument(arg, argLabel)).Resolve()
+                : label;
+
+        public static Rect AddYMin(this Rect t, float val)
         {
-            listing.Label(label.CanTranslate() ? label.Translate(new NamedArgument(value, formatLabel)).Resolve() : label);
-            return (int)listing.Slider(value, 0, 100);
+            var ret = new Rect(t);
+            ret.yMin += val;
+            return ret;
         }
+
+        public static Rect AddYMax(this Rect t, float val)
+        {
+            var ret = new Rect(t);
+            ret.yMax += val;
+            return ret;
+        }
+
+        public static Rect AddWidth(this Rect t, float val)
+        {
+            var ret = new Rect(t);
+            ret.width += val;
+            return ret;
+        }
+
+        public static Rect AddHeight(this Rect t, float val)
+        {
+            var ret = new Rect(t);
+            ret.height += val;
+            return ret;
+        }
+
+        public static Rect WithHeight(this Rect t, float val)
+            => new(t) { height = val };
     }
 }

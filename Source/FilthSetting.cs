@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using UnityEngine;
+using Verse;
 
 namespace Merthsoft.NoDirt
 {
@@ -37,16 +38,16 @@ namespace Merthsoft.NoDirt
                 OutsideHomeFilthName.Look(PercentChanceOutsideHomeArea)
             );
 
-        public void DoSubWindowContents(Listing_Standard listing)
+        public void DoSubWindowContents(ref Rect inRect)
         {
-            listing.Label(TranslationKeys.FilthDescription.Translate(new NamedArgument(FilthDefName, FilthDefNameArgumentLabel)));
-
+            Widgets.Label(inRect, TranslationKeys.FilthDescription.Translate(new NamedArgument(FilthDefName, FilthDefNameArgumentLabel)));
+            inRect.y += Text.LineHeight;
             PercentChances = (
-                listing.PercentageSliderTranslate(TranslationKeys.InsideHomeAreaValue, PercentChanceInsideHomeArea),
-                listing.PercentageSliderTranslate(TranslationKeys.OutsideHomeAreaValue, PercentChanceOutsideHomeArea)
+                NoDirtSettings.PercentageSliderTranslate(ref inRect, TranslationKeys.InsideHomeAreaValue, PercentChanceInsideHomeArea),
+                NoDirtSettings.PercentageSliderTranslate(ref inRect, TranslationKeys.OutsideHomeAreaValue, PercentChanceOutsideHomeArea)
             );
 
-            Delete = listing.ButtonText(TranslationKeys.Delete.Translate());
+            Delete = NoDirtSettings.ButtonText(ref inRect, TranslationKeys.Delete);
         }
     }
 }

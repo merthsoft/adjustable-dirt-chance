@@ -11,29 +11,28 @@ namespace Merthsoft.NoDirt
     {
         private readonly Dictionary<string, FilthSetting> filthMappings = new();
 
-        private int DefaultInsideHomeAreaPercentageChange = 0;
-        private int DefaultOutsideHomeAreaPercentageChange = 0;
+        private int DefaultInsideHomeAreaPercentageChance = 0;
+        private int DefaultOutsideHomeAreaPercentageChance = 0;
 
         private Vector2 scrollPosition = Vector2.zero;
 
-        public (int insideHome, int outsideHome) DefaultPercentChanges
+        public (int insideHome, int outsideHome) DefaultPercentChances
         {
-            set => (DefaultInsideHomeAreaPercentageChange, DefaultOutsideHomeAreaPercentageChange) = value;
+            set => (DefaultInsideHomeAreaPercentageChance, DefaultOutsideHomeAreaPercentageChance) = value;
         }
 
         public FilthSetting PopulateFilthType(string type) 
-            => filthMappings[type] = new FilthSetting(type, DefaultInsideHomeAreaPercentageChange, DefaultOutsideHomeAreaPercentageChange);
+            => filthMappings[type] = new FilthSetting(type, DefaultInsideHomeAreaPercentageChance, DefaultOutsideHomeAreaPercentageChance);
 
         public void DoSettingsWindowContext(Rect inRect)
         {
-            var listing = new Listing_Standard();
-            listing.Begin(inRect);
+            var labelRect = new Rect(inRect);
+            Widgets.LabelCacheHeight(ref labelRect, TranslationKeys.Explanation.Translate());
+            inRect.y += labelRect.height;
 
-            listing.Label(TranslationKeys.Explanation.Translate());
-
-            DefaultPercentChanges = (
-                listing.PercentageSliderTranslate(TranslationKeys.InsideHomeAreaValue, DefaultInsideHomeAreaPercentageChange),
-                listing.PercentageSliderTranslate(TranslationKeys.OutsideHomeAreaValue, DefaultOutsideHomeAreaPercentageChange)
+            DefaultPercentChances = (
+                PercentageSliderTranslate(ref inRect, TranslationKeys.InsideHomeAreaValue, DefaultInsideHomeAreaPercentageChance),
+                PercentageSliderTranslate(ref inRect, TranslationKeys.OutsideHomeAreaValue, DefaultOutsideHomeAreaPercentageChance)
             );
 
             var menuItems =
@@ -46,44 +45,71 @@ namespace Merthsoft.NoDirt
 
             if (menuItems.Count > 0)
             {
-                if (listing.ButtonText(TranslationKeys.Add.Translate()))
-                {
-                    var floatMenu = new FloatMenu(menuItems);
-                    Find.WindowStack.Add(floatMenu);
-                }
+                if (ButtonText(ref inRect, TranslationKeys.Add))
+                    Find.WindowStack.Add(new FloatMenu(menuItems));
             }
             else
             {
-                listing.Label(TranslationKeys.AllFilthTypesAdded.Translate());
-                listing.GapLine();
+                Widgets.Label(inRect, TranslationKeys.AllFilthTypesAdded.Translate());
+                inRect.y += Text.LineHeight;
+                Widgets.DrawLineHorizontal(inRect.x + 10, inRect.y, inRect.width - 10);
+                inRect.y += 5;
             }
 
             if (this.Any())
             {
-                var rect = new Rect(inRect.x, inRect.y + 175f, inRect.width, inRect.height - 255);
-                var viewRect = new Rect(0, 0, inRect.width - 16, this.Count() * 165);
-                listing.BeginScrollView(rect, ref scrollPosition, ref viewRect);
+                var outRect = inRect
+                                .AddWidth(-16)
+                                .AddHeight(-inRect.y);
 
+                var viewRect = new Rect(0, 0, outRect.width - 16, this.Count() * 165);
+                Widgets.BeginScrollView(outRect, ref scrollPosition, viewRect);
+
+                var index = 0;
                 foreach (var setting in this)
                 {
-                    setting.DoSubWindowContents(listing);
-                    listing.GapLine();
+                    setting.DoSubWindowContents(ref viewRect);
+                    if (index < filthMappings.Count - 1)
+                    {
+                        Widgets.DrawLineHorizontal(viewRect.x + 10, viewRect.y + 2, viewRect.width - 10);
+                        viewRect.y += 5;
+                    }
+                    index++;
                 }
 
-                listing.EndScrollView(ref viewRect);
+                Widgets.EndScrollView();
             }
 
             RemoveDeleted();
             Write();
-            listing.End();
+        }
+
+        public static bool ButtonText(ref Rect inRect, string label)
+        {
+            var buttonLabel = label.AttemptTranslate();
+            var buttonRect = new Rect(inRect.x, inRect.y, Text.CalcSize(buttonLabel).x + 20, 30);
+            var button = Widgets.ButtonText(buttonRect, buttonLabel);
+            inRect.y += 30;
+
+            return button;
+        }
+
+        public static int PercentageSliderTranslate(ref Rect inRect, string label, int value, string formatLabel = "value")
+        {            
+            var rect = new Rect(inRect).WithHeight(Text.LineHeight);
+            inRect.y += 2 * Text.LineHeight + 10;
+
+            Widgets.Label(rect, label.AttemptTranslate(value, formatLabel));
+            rect.y += Text.LineHeight;
+            return (int)Widgets.HorizontalSlider(rect, value, 0, 100);
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
 
-            Scribe_Values.Look(ref DefaultInsideHomeAreaPercentageChange, "default_inHome", 0, true);
-            Scribe_Values.Look(ref DefaultOutsideHomeAreaPercentageChange, "default_outHome", 0, true);
+            Scribe_Values.Look(ref DefaultInsideHomeAreaPercentageChance, "default_inHome", 0, true);
+            Scribe_Values.Look(ref DefaultOutsideHomeAreaPercentageChance, "default_outHome", 0, true);
 
             var filthNames = filthMappings.Any() ? string.Join("|", filthMappings.Keys.ToArray()) : string.Empty;
             Scribe_Values.Look(ref filthNames, "filth_names");
@@ -110,7 +136,7 @@ namespace Merthsoft.NoDirt
         public int GetMapping(string areaName, bool inHome)
         {
             if (!filthMappings.ContainsKey(areaName))
-                return inHome ? DefaultInsideHomeAreaPercentageChange : DefaultOutsideHomeAreaPercentageChange;
+                return inHome ? DefaultInsideHomeAreaPercentageChance : DefaultOutsideHomeAreaPercentageChance;
 
             var mapping = filthMappings[areaName];
             return inHome ? mapping.PercentChanceInsideHomeArea : mapping.PercentChanceOutsideHomeArea;
@@ -124,5 +150,8 @@ namespace Merthsoft.NoDirt
 
         public int RemoveDeleted() 
             => filthMappings.RemoveAll(s => s.Value.Delete);
+
+        public void Clear()
+            => filthMappings.Clear();
     }
 }
