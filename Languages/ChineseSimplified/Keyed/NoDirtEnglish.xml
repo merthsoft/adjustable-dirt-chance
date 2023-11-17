@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <merthsoft_nodirt_settings_category>调整灰尘生成几率</merthsoft_nodirt_settings_category>
+
+  <merthsoft_nodirt_settings_explanation>生成几率范围从0-100%。 以原版行动时生成灰尘的概率为100%。 每当引擎将要生成灰尘时，它会首先去检查灰尘种类的生成概率是否被重新设定。 如果没有找到对应的设定记录，将会按照默认的概率生成。 如果生成概率被设定为0，那么将永远不会生成灰尘。 如果被设置为100%，那么将会一直生成灰尘。 对于其间的任何值，它都会生成一个随机数，只有当该数小于要检查的值时，才会产生灰尘。这样可以减少产生的灰尘的总量。你不能用这个来增加产生的灰尘的数量。</merthsoft_nodirt_settings_explanation>
+
+  <merthsoft_nodirt_settings_in_home>在居住区内: {value}</merthsoft_nodirt_settings_in_home>
+  <merthsoft_nodirt_settings_outside_home>在野外: {value}</merthsoft_nodirt_settings_outside_home>
+
+  <merthsoft_nodirt_settings_filth_desc>{filthName}</merthsoft_nodirt_settings_filth_desc>
+
+  <merthsoft_nodirt_settings_all_filth_types_added>添加所有污渍类型。</merthsoft_nodirt_settings_all_filth_types_added>
+
+  <merthsoft_nodirt_settings_delete>删除</merthsoft_nodirt_settings_delete>
+  <merthsoft_nodirt_settings_add>添加污渍类型...</merthsoft_nodirt_settings_add>
+
+</LanguageData>
