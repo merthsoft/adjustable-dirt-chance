@@ -9,7 +9,7 @@ namespace Merthsoft.NoDirt;
 
 public class NoDirtSettings : ModSettings, IEnumerable<FilthSetting>
 {
-    private readonly Dictionary<string, FilthSetting> filthMappings = new();
+    private readonly Dictionary<string, FilthSetting> filthMappings = [];
 
     private int DefaultInsideHomeAreaPercentageChance = 0;
     private int DefaultOutsideHomeAreaPercentageChance = 0;
@@ -111,9 +111,9 @@ public class NoDirtSettings : ModSettings, IEnumerable<FilthSetting>
         Scribe_Values.Look(ref DefaultInsideHomeAreaPercentageChance, "default_inHome", 0, true);
         Scribe_Values.Look(ref DefaultOutsideHomeAreaPercentageChance, "default_outHome", 0, true);
 
-        var filthNames = filthMappings.Any() ? string.Join("|", filthMappings.Keys.ToArray()) : string.Empty;
+        var filthNames = filthMappings.Any() ? string.Join("|", [.. filthMappings.Keys]) : string.Empty;
         Scribe_Values.Look(ref filthNames, "filth_names");
-        var loadedNames = filthNames?.Split(new[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+        var loadedNames = filthNames?.Split(["|"], StringSplitOptions.RemoveEmptyEntries);
 
         foreach (var filthName in loadedNames)
         {

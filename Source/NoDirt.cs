@@ -27,4 +27,6 @@ public class NoDirt : Mod
 
     public override void DoSettingsWindowContents(Rect inRect)
         => Settings.DoSettingsWindowContext(inRect);
+
+    public override void WriteSettings() => base.WriteSettings();
 }
