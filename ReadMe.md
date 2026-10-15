@@ -1,4 +1,13 @@
 # Adjustable Dirt Chance
+
+<!-- merthsoft-download -->
+## Download
+
+[Download adjustable-dirt-chance.zip](https://merthsoft.com/RimWorld/adjustable-dirt-chance.zip) — RimWorld 1.7 release.
+
+The archive includes older supported version folders where available. Extract the mod folder into RimWorld's `Mods` directory.
+<!-- /merthsoft-download -->
+
 Allows you to adjust the chance that dirt (and all forms of filth) will spawn when the game attempts to create it, in and outside the home area. Range is 0-100, with 0 meaning never, and 100 meaning always.
 Vanilla behavior is 100%, but this mod changes it to default to a 0% chance for all types of filth. Should work with any mods that add filth as long as this is loaded under that mod and it uses BaseFilth for its added filth.
 
